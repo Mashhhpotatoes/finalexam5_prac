@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -9,51 +10,54 @@ class StudentController extends Controller
 {
     public function index () {
         $students = Student::all();
-        return view ('student.index', compact('students'));
+        return view ('studentmngt.index', compact('students'));
     }
 
     public function create () {
-        return view ('student.create');
+        return view ('studentmngt.create');
     }
-
+    
     public function store (Request $request) {
-        $student = new Student();
-        $student->fname = $request->fname;
-        $student->mname = $request->mname;
-        $student->lname = $request->lname;
-        $student->address = $request->address;
-        $student->dob = $request->dob;
-        $student->save();
+        $request->validate([
+            'fname' => 'required',
+            'mname' => 'required',
+            'lname' => 'required',
+            'address' => 'required',
+            'dob' => 'required',
+        ]);
 
-        return redirect()->route('students.index');
+        Student::create($request->all());
+        return redirect()->route('studentmngt.index')->with('status', 'Student Added Successfully');
     }
 
     public function show (int $id) {
         $student = Student::find($id);
-        return view ('student.show', compact('student'));
+        return view ('studentmngt.show', compact('student'));
     }
 
     public function edit (int $id) {
         $student = Student::find($id);
-        return view ('student.edit', compact('student'));
+        return view ('studentmngt.edit', compact('student'));
     }
-
+    
     public function update (Request $request, int $id) {
+        $request->validate([
+            'fname' => 'required',
+            'mname' => 'required',
+            'lname' => 'required',
+            'address' => 'required',
+            'dob' => 'required',
+        ]);
+
         $student = Student::find($id);
-        $student->fname = $request->fname;
-        $student->mname = $request->mname;
-        $student->lname = $request->lname;
-        $student->address = $request->address;
-        $student->dob = $request->dob;
-        $student->save();
-
-        return redirect()->route('students.index');
+        $student->update($request->all());
+        return redirect()->route('studentmngt.index')->with('status', 'Student Updated Successfully');
     }
-
+    
     public function destroy (int $id) {
         $student = Student::find($id);
         $student->delete();
-
-        return redirect()->route('students.index');
+        return redirect()->route('studentmngt.index')->with('status', 'Student Deleted Successfully');
     }
+
 }
