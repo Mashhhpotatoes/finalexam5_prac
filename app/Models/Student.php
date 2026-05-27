@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class studentmngt extends Model
+class Student extends Model
 {
     use HasFactory;
-    protected $table = '3a_tbl';
+    protected $table = 'exam5_db';
     protected $primarykey = 'id';
     protected $fillable = [
         'fname',
         'lname',
         'mname',
-        'add',
-        'dobirth',
-    ]
+        'address',
+        'dob',
+    ];
 }
